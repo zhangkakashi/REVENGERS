@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="com.revengers.beans">
+    <class name="Video" table="video">
+        <id name="id">
+            <generator class="native"/>
+        </id>
+        <property name="title" not-null="true" length="50"/>
+        <property name="director" length="50"/>
+        <property name="actor" length="50"/>
+        <property name="year" type="integer"/>
+        <property name="stock" type="integer"/>
+        <property name="length" length="20"/>
+        <property name="description" type="text"/>
+        <property name="language" length="20"/>
+        <property name="category"/>
+        <property name="format" length="10"/>
+        <property name="address" not-null="true"/>
+        <property name="priority" type="integer">
+           <column name="priority" not-null="true" default="1" />
+        </property>
+        <set name="transactions" cascade="delete" lazy="false">
+            <key column="video_id"/>
+            <one-to-many class="Transaction"/>
+        </set>
+    </class>
+</hibernate-mapping>

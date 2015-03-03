@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.0.dtd">
+
+<struts>
+	<constant name="struts.objectFactory" value="spring"></constant>
+	<constant name="struts.ui.theme" value="simple"></constant>
+
+	<package name="login_again" extends="struts-default">
+		<action name="login_again" class="com.revengers.actions.LoginAgainAction">
+			<result>/login_again.jsp</result>
+		</action>
+	</package>
+
+	<package name="login" extends="struts-default">
+		<action name="login" class="com.revengers.actions.LoginAction">
+			<result>/index.jsp</result>
+		</action>
+	</package>
+
+	<package name="login_page" extends="struts-default">
+		<action name="login_page" class="com.revengers.actions.AccountAction">
+			<result name="customer" type="redirect">/Customer.jsp</result>
+			<result name="admin" type="redirect">/Admin.jsp</result>
+			<result name="error">/Error.jsp</result>
+		</action>
+	</package>
+
+	<package name="customer" namespace="/customer" extends="struts-default">
+	    <action name="VideoNO*" class="com.revengers.actions.SingleVideoBrowseAction">
+			<result>/Video{1}.jsp</result>
+		</action>
+		<action name="AddVideo*" class="com.revengers.actions.SingleVideoBrowseAction" method="add">
+			<result>/Shopping_Cart.jsp</result>
+		</action>
+		<action name="*_*" class="com.revengers.actions.{1}{2}Action">
+			<result>/{1}_{2}.jsp</result>
+		</action>
+	</package>
+
+	<package name="admin" namespace="/admin" extends="struts-default">
+	    <action name="addVideo" class="com.revengers.actions.AdminVideosAction" method="addVideo">
+	        <interceptor-ref name="defaultStack"/>
+			<interceptor-ref name="token" />
+	        <result name="success">/Admin_Videos.jsp</result>
+	        <result name="invalid.token">/Admin_Videos.jsp</result>   
+	    </action>
+		<action name="**Edit" class="com.revengers.actions.{1}{2}Action"
+			method="getInputStream">
+			<result type="stream"></result>
+		</action>
+		<!-- <action name="AdminVideosEdit" class="com.marlabs.strutsActions.AdminVideosAction" 
+			method="getInputStream"> <result type="stream"></result> </action> -->
+		<action name="*_*" class="com.revengers.actions.{1}{2}Action">
+			<result>/{1}_{2}.jsp</result>
+		</action>
+
+	</package>
+	
+	<package name="video" namespace="/video" extends="struts-default">
+	    <action name="view" class="com.revengers.actions.VideoAction">
+	      <result name="success">/Video.jsp</result>
+	    </action>
+	
+	</package>
+
+
+
+</struts>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context" 
+    xmlns:tx="http://www.springframework.org/schema/tx" 
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context 
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+        <context:component-scan base-package="com.revengers"/>
+        
+        <bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+          <property name="driverClass" value="com.mysql.jdbc.Driver"/>
+          <property name="jdbcUrl" value="jdbc:mysql://localhost/REVENGERS?useUnicode=true&amp;characterEncoding=UTF-8"></property>
+          <property name="user" value="kakashi"/>
+          <property name="password" value="123qwe"/>
+          <property name="initialPoolSize" value="1"/>
+          <property name="minPoolSize" value="1"/>
+          <property name="maxPoolSize" value="300"/>
+          <property name="maxIdleTime" value="60"/>
+          <property name="acquireIncrement" value="5"/>
+          <property name="idleConnectionTestPeriod" value="60"/>
+        </bean>
+        
+        <bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
+          <property name="dataSource" ref="dataSource"/>
+          <property name="mappingResources">
+            <list>
+              <value>com/revengers/beans/Customer.hbm.xml</value>
+              <value>com/revengers/beans/Admin.hbm.xml</value>
+              <value>com/revengers/beans/Video.hbm.xml</value>
+              <value>com/revengers/beans/Transaction.hbm.xml</value>
+            </list>
+          </property>
+          <property name="hibernateProperties">
+            <value>
+              hibernate.dialect=org.hibernate.dialect.MySQL5Dialect
+              hibernate.hbm2ddl.auto=update
+              hibernate.show_sql=false
+              hibernate.format_sql=false
+            </value>
+          </property>
+        </bean>
+        
+        <bean id="transactionManager" class="org.springframework.orm.hibernate4.HibernateTransactionManager">
+          <property name="sessionFactory" ref="sessionFactory"></property>
+        </bean>
+        
+        <tx:annotation-driven transaction-manager="transactionManager"/>
+        
+</beans>
